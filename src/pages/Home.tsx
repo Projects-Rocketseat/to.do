@@ -27,6 +27,14 @@ export function Home() {
     setTasks((oldState) => [...oldState, newTask]);
   }
 
+  function handleEditTask(taskId: number, taskNewTitle: string) {
+    const tasksChange = tasks.map((task) => {
+      if (task.id === taskId) task.title = taskNewTitle;
+      return task;
+    });
+    setTasks(tasksChange);
+  }
+
   function handleToggleTaskDone(id: number) {
     const tasksChange = tasks.map((task) => {
       if (task.id === id) task.done = !task.done;
@@ -59,6 +67,7 @@ export function Home() {
         tasks={tasks}
         toggleTaskDone={handleToggleTaskDone}
         removeTask={handleRemoveTask}
+        editTask={handleEditTask}
       />
     </View>
   );
