@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 
 import { Header } from "../components/Header";
 import { Task, TasksList } from "../components/TasksList";
@@ -9,6 +9,16 @@ export function Home() {
   const [tasks, setTasks] = useState<Task[]>([]);
 
   function handleAddTask(newTaskTitle: string) {
+    const foundItem = tasks.find((task) => task.title === newTaskTitle);
+
+    if (foundItem) {
+      Alert.alert(
+        "Task já cadastrada",
+        "Você não pode cadastrar uma task com o mesmo nome"
+      );
+      return;
+    }
+
     const newTask: Task = {
       id: new Date().getTime(),
       title: newTaskTitle,
@@ -27,6 +37,14 @@ export function Home() {
   }
 
   function handleRemoveTask(id: number) {
+    Alert.alert(
+      "Remover item",
+      "Tem certeza que você deseja remover esse item?",
+      [{ text: "Não" }, { text: "Sim", onPress: () => removeTask(id) }]
+    );
+  }
+
+  function removeTask(id: number) {
     const newTaskList = tasks.filter((task) => task.id !== id);
     setTasks(newTaskList);
   }
